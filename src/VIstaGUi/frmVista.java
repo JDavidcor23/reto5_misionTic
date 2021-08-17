@@ -14,15 +14,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frmVista extends javax.swing.JFrame {
     DefaultTableModel model;
+    DefaultTableModel model2;
+    DefaultTableModel model3;
 
     /**
      * Creates new form frmVista
      */
     public frmVista() {
         initComponents();
-        String[] titulo = {"Reto 5"};
+        String[] titulo = {"Nombre Líder"};
+        String [] titulo2 = {
+            "Constructora",
+            "Fecha Inicio",
+            "Clasificacion"
+        };
+        String[] titulo3 = {"Cantidad"};
         model = new DefaultTableModel(null,titulo);
-        jTable1.setModel(model);
+        model2 = new DefaultTableModel(null,titulo2);
+        model3 = new DefaultTableModel(null,titulo3);
     }
 
     /**
@@ -153,6 +162,14 @@ public class frmVista extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jScrollPane1.setForeground(new java.awt.Color(102, 102, 102));
+
+        jTable1.setBackground(new java.awt.Color(255, 255, 255));
+        jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
+        jTable1.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(102, 102, 102));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -161,6 +178,9 @@ public class frmVista extends javax.swing.JFrame {
                 "Title 1"
             }
         ));
+        jTable1.setGridColor(new java.awt.Color(153, 255, 255));
+        jTable1.setSelectionBackground(new java.awt.Color(0, 153, 153));
+        jTable1.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -180,8 +200,8 @@ public class frmVista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,7 +212,9 @@ public class frmVista extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,18 +223,21 @@ public class frmVista extends javax.swing.JFrame {
     private void Blider_ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Blider_ciudadActionPerformed
         // TODO add your handling code here:
         model.setRowCount(0);
+        jTable1.setModel(model);
         mostrarDatosLider();
     }//GEN-LAST:event_Blider_ciudadActionPerformed
 
     private void Bproyecto_ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bproyecto_ciudadActionPerformed
         // TODO add your handling code here:
-        model.setRowCount(0);
+        model2.setRowCount(0);
+        jTable1.setModel(model2);
         mostrarDatosProyecto();
     }//GEN-LAST:event_Bproyecto_ciudadActionPerformed
 
     private void BSuma_ProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSuma_ProveedorActionPerformed
         // TODO add your handling code here:
-        model.setRowCount(0);
+        model3.setRowCount(0);
+        jTable1.setModel(model3);
         mostrarDatosSuma();
         
     }//GEN-LAST:event_BSuma_ProveedorActionPerformed
@@ -220,6 +245,8 @@ public class frmVista extends javax.swing.JFrame {
     private void BlimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlimpiarActionPerformed
         // TODO add your handling code here:
         model.setRowCount(0);
+        model2.setRowCount(0);
+        model3.setRowCount(0);
     }//GEN-LAST:event_BlimpiarActionPerformed
 
     /**
@@ -282,19 +309,23 @@ public class frmVista extends javax.swing.JFrame {
         Conexion conexion = new Conexion();
          try {
             ResultSet resultado = conexion.consultarRegistros(
-                    "SELECT Constructora || ' ' ||"+ 
-                     "Fecha_Inicio || ' ' ||"+
+                    "SELECT Constructora,"+ 
+                     "Fecha_Inicio,"+
                      "Clasificacion "+
-                     "AS 'Proyecto'" +
                      "FROM Proyecto "+
                      "WHERE Ciudad = 'Pereira';"
                     );
             while(resultado.next()){
-                System.out.println(resultado.getString("Proyecto"));
+                System.out.println(resultado.getString("Constructora"));
+                System.out.println(resultado.getString("Fecha_Inicio"));
+                System.out.println(resultado.getString("Clasificacion"));
                 
-                Object[] oProyecto ={resultado.getString("Proyecto")};
+                Object[] oProyecto ={resultado.getString("Constructora"),
+                    resultado.getString("Fecha_Inicio"),
+                    resultado.getString("Clasificacion")
+                };
                 
-                model.addRow(oProyecto);
+                model2.addRow(oProyecto);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -311,9 +342,9 @@ public class frmVista extends javax.swing.JFrame {
             while(resultado.next()){
                 System.out.println(resultado.getString("Cantidad"));
                 
-                Object[] oProyecto ={resultado.getString("Cantidad")};
+                Object[] oSuma ={resultado.getString("Cantidad")};
                 
-                model.addRow(oProyecto);
+                model3.addRow(oSuma);
             }
         } catch (Exception e) {
             System.out.println(e);
